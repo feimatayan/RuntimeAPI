@@ -447,8 +447,17 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
 }
 //关联的引用
 - (void)associativeReferences{
-    CustomClass *custom = [[CustomClass alloc] init];
-    objc_setAssociatedObject(custom, "str", "strstr", <#objc_AssociationPolicy policy#>)
+    static char overviewKey;
+    NSArray * array =[[NSArray alloc] initWithObjects:@"One", @"Two", @"Three", nil];
+    //为了演示的目的，这里使用initWithFormat:来确保字符串可以被销毁
+    NSString * overview = [[NSString alloc] initWithFormat:@"%@",@"First three numbers"];
+    objc_setAssociatedObject(array, &overviewKey, overview, OBJC_ASSOCIATION_RETAIN);
+    NSString * associatedObject = (NSString *)objc_getAssociatedObject(array, &overviewKey);
+    //断开关联
+    objc_setAssociatedObject(array, &overviewKey, nil, OBJC_ASSOCIATION_ASSIGN);
+//移除关联
+    objc_removeAssociatedObjects(array);
+
 }
 
 - (void)didReceiveMemoryWarning {
