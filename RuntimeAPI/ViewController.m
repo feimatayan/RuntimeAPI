@@ -10,6 +10,8 @@
 #import <objc/runtime.h>
 #import "CustomClass.h"
 #import "PropertiesViewController.h"
+#import <objc/message.h>
+
 
 @protocol TempProcotol <NSObject>
 
@@ -224,6 +226,8 @@
     [self obtainingClassDefinitions:[CustomClass class]];
     //变量的一些操作
     [self instanceVariablies];
+    //发送消息，一定要导入头文件
+    [self objc_msg];
    // class_replaceMethod(MyClass, @selector(myclasstest:), replaceClasstest(MyClass), @selector(replaceClasstest:), <#int a#>, <#const char *types#>)
     // prints
    // Ivar *layoutIvar = class_getIvarLayout([CustomClass class]);
@@ -459,7 +463,27 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
     objc_removeAssociatedObjects(array);
 
 }
+//发送消息
+- (void)objc_msg{
+//    SEL testFunc = NSSelectorFromString(@"sendMessage");
+//    
+//    objc_msgSend(self, testFunc, 10);
+    //调用这个方法时候，在building里边搜索objc,把objc_msg call设置为NO
+    id  returnValue = objc_msgSend(self,
+                                  @selector(sendMessage:),
+                                  10);
+    
+    //Arm64位不能使用,返回结构体
+    //CGRect frame = objc_msgSend_stret(view, @selector(frame));
 
+    struct objc_super { id receiver; Class class; };
+    objc_msgSendSuper(<#struct objc_super *super#>, <#SEL op, ...#>)
+    
+}
+- (NSString *)sendMessage:(NSInteger)a{
+    NSLog(@"aaaa%ld",a);
+    return @"dd";
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
