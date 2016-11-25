@@ -11,7 +11,8 @@
 #import "CustomClass.h"
 #import "PropertiesViewController.h"
 #import <objc/message.h>
-
+#import "HYBMethodLearn.h"
+typedef struct objc_super *superClass;
 
 @protocol TempProcotol <NSObject>
 
@@ -19,6 +20,13 @@
 - (void)tempPro;
 
 @end
+
+//struct objc_super {
+//   // id receiver;
+//    //NSString *namel;
+//    NSInteger intName;
+//    Class tempClass;
+//};
 
 @interface ViewController ()
 {
@@ -221,13 +229,17 @@
     /***************************************************************************/
     //对象使用
     CustomClass *customInstacneClass = [[CustomClass alloc] init];
-   [self classInstance:customInstacneClass];
+  // [self classInstance:customInstacneClass];
     //获取类定义
     [self obtainingClassDefinitions:[CustomClass class]];
     //变量的一些操作
     [self instanceVariablies];
     //发送消息，一定要导入头文件
     [self objc_msg];
+    //方法调用
+    [self methodInvoke];
+    //关于库的一些方法
+    [self workWithLibrariesMethods];
    // class_replaceMethod(MyClass, @selector(myclasstest:), replaceClasstest(MyClass), @selector(replaceClasstest:), <#int a#>, <#const char *types#>)
     // prints
    // Ivar *layoutIvar = class_getIvarLayout([CustomClass class]);
@@ -476,14 +488,135 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
     //Arm64位不能使用,返回结构体
     //CGRect frame = objc_msgSend_stret(view, @selector(frame));
 
-    struct objc_super { id receiver; Class class; };
-    objc_msgSendSuper(<#struct objc_super *super#>, <#SEL op, ...#>)
+    //struct objc_super { id receiver; Class class; };
+    //objc_msgSendSuper(super, @selector(sendMessage:),10);
     
+    //输出，i386
+   // objc_msgSend_fpret(self, @selector(sendMessage:),10);
+    
+    //objc_msgSend_stret(self, @selector(sendMessage:),10);
+    //64位取消
+    //void objc_msgSendSuper_stret(struct objc_super *super, SEL op, ...);
+
 }
 - (NSString *)sendMessage:(NSInteger)a{
     NSLog(@"aaaa%ld",a);
     return @"dd";
 }
+//方法调用
+- (void)methodInvoke{
+    //调用一个方法
+    //Method *method = sel
+    // 获取方法
+    Method method = class_getInstanceMethod([self class], @selector(sendMessage:));
+    //调用方法
+    method_invoke(self, method,100);
+    //不支持64位
+    //method_invoke_stret(<#id receiver#>, <#Method m, ...#>)
+    //得到方法名
+    SEL selMethod = method_getName(method);
+    const char *selName = sel_getName(method_getName(method));
+    
+    NSString *selnameStr = [[NSString alloc] initWithCString:selName encoding:NSUTF8StringEncoding];
+    //获取方法对象
+    IMP impMethod = method_getImplementation(method);
+    //获取方法的类型
+    const char *typeMethod = method_getTypeEncoding(method);
+    NSString *typeMethodStr = [[NSString alloc] initWithCString:typeMethod encoding:NSUTF8StringEncoding];
+    //复制返回值类型，一定要释放
+    const char *copyTypeMethod = method_copyReturnType(method);
+    NSString *copyTypeMethodStr = [[NSString alloc] initWithCString:copyTypeMethod encoding:NSUTF8StringEncoding];
+    //free(&copyTypeMethod);//一定要释放
+    //获取方法的指定位置参数的类型字符串
+    Method argumentMethod = class_getInstanceMethod([self class], @selector(tempSendMessage:andString:));
+    unsigned int methodInt = 0;
+    const char *argureMent = method_copyArgumentType(argumentMethod, 2);
+    //NSString *argumentStr = [[NSString alloc] initWithCString:argureMent encoding:NSUTF8StringEncoding];
+    // 通过引用返回方法的返回值类型字符串
+    //void method_getReturnType ( Method m, char *dst, size_t dst_len );
+    //void method_getReturnType(Method m, char *dst, size_t dst_len);
+//获取函数参数
+    NSInteger methodArgumentInt = method_getNumberOfArguments(argumentMethod);
+    
+    //通过引用返回方法指定位置参数的类型字符串
+    //method_getArgumentType(argumentMethod, 2, <#char *dst#>, <#size_t dst_len#>)
+    
+    //所有函数实现方法
+    HYBMethodLearn *hybMethod = [[HYBMethodLearn alloc] init];
+    [hybMethod getMethods];
+    //函数描述
+    typedef struct  objc_method_description *methodDescription;
+    //methodDescription  =  method_getDescription(method);
+    
+    NSLog(@"description:%@",NSStringFromSelector(method_getDescription(method)->name));
+    //返回前一个函数方法
+    IMP methodIMP = class_getMethodImplementation([self class], @selector(sendMessage:));
+    IMP newIMP = method_setImplementation(argumentMethod, methodIMP);
+    //函数方法交换,后边跟前边交换
+    method_exchangeImplementations(method, argumentMethod);
+    [self tempSendMessage:@"a" andString:@"b"];
+    //*methodDescription  =  method_getDescription(method);
+}
+
+- (void)tempSendMessage:(NSString *)a andString:(NSString *)b{
+    NSLog(@"tempSendmesssage");
+}
+
+/*
+ Type Encoding
+ 
+ 下面是官方给出的所有类型编码，数据类型的编码最终值会有可能是下面中的多个的组合：
+ 
+ 编码值	含意
+ c	代表char类型
+ i	代表int类型
+ s	代表short类型
+ l	代表long类型，在64位处理器上也是按照32位处理
+ q	代表long long类型
+ C	代表unsigned char类型
+ I	代表unsigned int类型
+ S	代表unsigned short类型
+ L	代表unsigned long类型
+ Q	代表unsigned long long类型
+ f	代表float类型
+ d	代表double类型
+ B	代表C++中的bool或者C99中的_Bool
+ v	代表void类型
+ *	代表char *类型
+ @	代表对象类型
+ #	代表类对象 (Class)
+ :	代表方法selector (SEL)
+ [array type]	代表array
+ {name=type…}	代表结构体
+ (name=type…)	代表union
+ bnum	A bit field of num bits
+ ^type	A pointer to type
+ ?	An unknown type (among other things, this code is used for function pointers)
+ 
+ 
+ 
+ */
+//库的工作
+- (void)workWithLibrariesMethods{
+    unsigned int outCount = 0;
+    NSLog(@"获取指定类所在动态库");
+    NSLog(@"UIView's Framework: %s",class_getImageName(NSClassFromString(@"UIView")));
+    NSLog(@"获取指定库或框架中所有类的类名");
+    const char **copyOImageArr = objc_copyImageNames(&outCount);
+
+    for (unsigned int j = 0; j < outCount; j++) {
+        NSString *classStr = [[NSString alloc] initWithCString:copyOImageArr[j] encoding:NSUTF8StringEncoding];
+        NSLog(@"className:%@",classStr);
+        
+    }
+    unsigned int tempOutCount = 0;
+
+    const char **classes = objc_copyClassNamesForImage(class_getImageName(NSClassFromString(@"UIView")),&tempOutCount);
+    for (int i = 0; i < tempOutCount; i++){
+        NSLog(@"class name: %s", classes[i]);
+    }
+
+    }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

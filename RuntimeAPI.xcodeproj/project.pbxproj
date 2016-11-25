@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E14B6721DE81C66007A7AFF /* HYBMethodLearn.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E14B6711DE81C66007A7AFF /* HYBMethodLearn.m */; };
+		3E14B6791DE83C4A007A7AFF /* ic_plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E14B6741DE83C4A007A7AFF /* ic_plus@2x.png */; };
+		3E14B67A1DE83C4A007A7AFF /* ic_plus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E14B6751DE83C4A007A7AFF /* ic_plus@3x.png */; };
+		3E14B67B1DE83C4A007A7AFF /* zhijin_banner.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E14B6761DE83C4A007A7AFF /* zhijin_banner.png */; };
+		3E14B67C1DE83C4A007A7AFF /* zhijin_listbg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E14B6771DE83C4A007A7AFF /* zhijin_listbg@2x.png */; };
+		3E14B67D1DE83C4A007A7AFF /* zhijin_listbg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E14B6781DE83C4A007A7AFF /* zhijin_listbg@3x.png */; };
 		3EC400FE1DE3EDE200FCAE55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC400FD1DE3EDE200FCAE55 /* main.m */; };
 		3EC401011DE3EDE200FCAE55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC401001DE3EDE200FCAE55 /* AppDelegate.m */; };
 		3EC401041DE3EDE200FCAE55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC401031DE3EDE200FCAE55 /* ViewController.m */; };
@@ -29,6 +35,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E14B6701DE81C65007A7AFF /* HYBMethodLearn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBMethodLearn.h; sourceTree = "<group>"; };
+		3E14B6711DE81C66007A7AFF /* HYBMethodLearn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBMethodLearn.m; sourceTree = "<group>"; };
+		3E14B6741DE83C4A007A7AFF /* ic_plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_plus@2x.png"; sourceTree = "<group>"; };
+		3E14B6751DE83C4A007A7AFF /* ic_plus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_plus@3x.png"; sourceTree = "<group>"; };
+		3E14B6761DE83C4A007A7AFF /* zhijin_banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zhijin_banner.png; sourceTree = "<group>"; };
+		3E14B6771DE83C4A007A7AFF /* zhijin_listbg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zhijin_listbg@2x.png"; sourceTree = "<group>"; };
+		3E14B6781DE83C4A007A7AFF /* zhijin_listbg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zhijin_listbg@3x.png"; sourceTree = "<group>"; };
 		3EC400F91DE3EDE200FCAE55 /* RuntimeAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RuntimeAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EC400FD1DE3EDE200FCAE55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EC400FF1DE3EDE200FCAE55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -66,6 +79,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E14B6731DE83C4A007A7AFF /* Funds */ = {
+			isa = PBXGroup;
+			children = (
+				3E14B6741DE83C4A007A7AFF /* ic_plus@2x.png */,
+				3E14B6751DE83C4A007A7AFF /* ic_plus@3x.png */,
+				3E14B6761DE83C4A007A7AFF /* zhijin_banner.png */,
+				3E14B6771DE83C4A007A7AFF /* zhijin_listbg@2x.png */,
+				3E14B6781DE83C4A007A7AFF /* zhijin_listbg@3x.png */,
+			);
+			path = Funds;
+			sourceTree = "<group>";
+		};
 		3EC400F01DE3EDE100FCAE55 = {
 			isa = PBXGroup;
 			children = (
@@ -95,10 +120,13 @@
 				3EC401221DE422A200FCAE55 /* CustomClass.m */,
 				3EC401241DE43B5F00FCAE55 /* PropertiesViewController.h */,
 				3EC401251DE43B5F00FCAE55 /* PropertiesViewController.m */,
+				3E14B6701DE81C65007A7AFF /* HYBMethodLearn.h */,
+				3E14B6711DE81C66007A7AFF /* HYBMethodLearn.m */,
 				3EC401051DE3EDE200FCAE55 /* Main.storyboard */,
 				3EC401081DE3EDE200FCAE55 /* Assets.xcassets */,
 				3EC4010A1DE3EDE200FCAE55 /* LaunchScreen.storyboard */,
 				3EC4010D1DE3EDE200FCAE55 /* Info.plist */,
+				3E14B6731DE83C4A007A7AFF /* Funds */,
 				3EC400FC1DE3EDE200FCAE55 /* Supporting Files */,
 			);
 			path = RuntimeAPI;
@@ -207,7 +235,12 @@
 			files = (
 				3EC4010C1DE3EDE200FCAE55 /* LaunchScreen.storyboard in Resources */,
 				3EC401091DE3EDE200FCAE55 /* Assets.xcassets in Resources */,
+				3E14B67D1DE83C4A007A7AFF /* zhijin_listbg@3x.png in Resources */,
+				3E14B6791DE83C4A007A7AFF /* ic_plus@2x.png in Resources */,
 				3EC401071DE3EDE200FCAE55 /* Main.storyboard in Resources */,
+				3E14B67A1DE83C4A007A7AFF /* ic_plus@3x.png in Resources */,
+				3E14B67C1DE83C4A007A7AFF /* zhijin_listbg@2x.png in Resources */,
+				3E14B67B1DE83C4A007A7AFF /* zhijin_banner.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +261,7 @@
 				3EC401041DE3EDE200FCAE55 /* ViewController.m in Sources */,
 				3EC401231DE422A200FCAE55 /* CustomClass.m in Sources */,
 				3EC401011DE3EDE200FCAE55 /* AppDelegate.m in Sources */,
+				3E14B6721DE81C66007A7AFF /* HYBMethodLearn.m in Sources */,
 				3EC400FE1DE3EDE200FCAE55 /* main.m in Sources */,
 				3EC401261DE43B5F00FCAE55 /* PropertiesViewController.m in Sources */,
 			);
