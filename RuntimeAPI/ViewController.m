@@ -602,20 +602,22 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
     NSLog(@"获取指定类所在动态库");
     NSLog(@"UIView's Framework: %s",class_getImageName(NSClassFromString(@"UIView")));
     NSLog(@"获取指定库或框架中所有类的类名");
+    // 获取所有加载的Objective-C框架和动态库的名称
     const char **copyOImageArr = objc_copyImageNames(&outCount);
 
     for (unsigned int j = 0; j < outCount; j++) {
         NSString *classStr = [[NSString alloc] initWithCString:copyOImageArr[j] encoding:NSUTF8StringEncoding];
+        //获取动态库名称
         NSLog(@"className:%@",classStr);
-        
-    }
-    unsigned int tempOutCount = 0;
+        unsigned int tempOutCount = 0;
+        //获取动态库的类名称
+        const char **classes = objc_copyClassNamesForImage(copyOImageArr[j],&tempOutCount);
+        for (int i = 0; i < tempOutCount; i++){
+            NSLog(@"class name: %s", classes[i]);
+        }
 
-    const char **classes = objc_copyClassNamesForImage(class_getImageName(NSClassFromString(@"UIView")),&tempOutCount);
-    for (int i = 0; i < tempOutCount; i++){
-        NSLog(@"class name: %s", classes[i]);
     }
-
+    
     }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
