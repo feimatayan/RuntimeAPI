@@ -19,11 +19,21 @@
     return value.intValue;
 }
 
+/**
+ <#Description#>
+
+ @param names <#names description#>
+
+ @return <#return value description#>
+ */
 - (NSArray *)arrayWithNames:(NSArray *)names {
     NSLog(@"%@", names);
     return names;
 }
 
+/**
+ <#Description#>
+ */
 - (void)getMethods {
     unsigned int outCount = 0;
     Method *methodList = class_copyMethodList(self.class, &outCount);
