@@ -770,12 +770,48 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
     //void objc_enumerationMutation(id obj)
     // 设置突变处理
     //void objc_setEnumerationMutationHandler(void (*handler)(id))
-    objc_setEnumerationMutationHandler([self mutArr:@"dd"]);
-    NSMutableString *mutStr = [NSMutableString stringWithCapacity:0];
-    [mutStr appendString:@"dd"];
-    NSLog(@"enumeration:%@",[self mutArr:@"dd"]);
-    objc_enumerationMutation(mutStr);
+//    objc_setEnumerationMutationHandler([self mutArr:@"dd"]);
+//    NSMutableString *mutStr = [NSMutableString stringWithCapacity:0];
+//    [mutStr appendString:@"dd"];
+//    NSLog(@"enumeration:%@",[self mutArr:@"dd"]);
+//    objc_enumerationMutation(mutStr);
     //NSLog(@"%@",)
+    
+    // 创建一个指针函数的指针，该函数调用时会调用特定的block
+    IMP  imp = imp_implementationWithBlock(^(id object,NSString *str){
+        NSLog(@"Str:%@",str);
+    });
+    class_addMethod([CustomClass class], @selector(testBlock:), imp, "v@:@");
+    
+    CustomClass *runtime = [[CustomClass alloc] init];
+    [runtime performSelector:@selector(testBlock:) withObject:@"hello world!"];
+    
+    NSLog(@"%@",imp_getBlock(imp));
+    //移除block
+    imp_removeBlock(imp);
+    NSLog(@"%@",imp_getBlock(imp));
+    id obj = @"fff";
+    id obj1 = @"eee";
+    //id tmp = objc_loadWeak(&obj1);
+    //objc_initWeak(&obj1);
+    //objc_initWeak(&obj1, obj);
+    //id tmp = objc_loadWeakRetained(&obj1);
+    //tmp
+/*
+    // 加载弱引用指针引用的对象并返回
+    id objc_loadWeak ( id *location );
+    
+    // 存储__weak变量的新值
+    id objc_storeWeak ( id *location, id obj );
+    ● objc_loadWeak函数：该函数加载一个弱指针引用的对象，并在对其做retain和autoreleasing操作后返回它。这样，对象就可以在调用者使用它时保持足够长的生命周期。该函数典型的用法是在任何有使用__weak变量的表达式中使用。
+    
+    ● objc_storeWeak函数：该函数的典型用法是用于__weak变量做为赋值对象时。
+    
+    这两个函数的具体实施在此不举例，有兴趣的小伙伴可以参考《Objective-C高级编程：iOS与OS X多线程和内存管理》中对__weak实现的介绍。
+ */
+}
+- (void)testBlock:(NSString *)testStr{
+    
 }
 - (void*)mutArr:(id)object{
     NSMutableArray *tempArr = [NSMutableArray arrayWithCapacity:0];
@@ -784,6 +820,54 @@ static void replaceClasstest(id self, SEL _cmd, int a) //self和_cmd是必须的
     [tempArr addObject:object];
     return (__bridge void *)(tempArr);
     
+}
+//类定义结构体
+//IMP与SEL的关系
+/*
+SEL : 类成员方法的指针，但不同于C语言中的函数指针，函数指针直接保存了方法的地址，但SEL只是方法编号。
+
+IMP:一个函数指针,保存了方法的地址
+
+IMP和SEL关系
+
+每一个继承于NSObject的类都能自动获得runtime的支持。在这样的一个类中，有一个isa指针，指向该类定义的数据结构体,这个结构体是由编译器编译时为类（需继承于NSObject）创建的.在这个结构体中有包括了指向其父类类定义的指针以及 Dispatch table. Dispatch table是一张SEL和IMP的对应表。
+ 
+ 
+ //获取类的方法,不能获取静态方法
+ unsigned int methodCount = 0;
+ //id objectClass = [CustomClass new];
+ //objc_getClass([CustomClass class]);
+ //;
+ Method *method = class_copyMethodList([CustomClass class], &methodCount);
+ 
+ 
+ for(int i = 0; i < methodCount; i++) {
+ Method thisIvar = method[i];
+ 
+ SEL sel = method_getName(thisIvar);
+ const char *name = sel_getName(sel);
+ 
+ 
+ 
+ NSLog(@"zp method :%s", name);
+ 
+ 
+ 
+ }
+*/
+- (void)classDefiationClassStrcut{
+     objc_getClass("ViewController");
+    struct objc_object {
+        Class isa;
+    };
+  //  OBJC_ROOT_CLASS
+    //objc_AssociationPolicy
+//    struct objc_super {
+//        id receiver;
+//        Class super_class;
+//    };
+
+    //typedef struct objc_class *Class;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
